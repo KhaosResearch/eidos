@@ -1,0 +1,14 @@
+{
+    "name": "hello_world",
+    "description": "This function can be used to salute someone.'",
+    "module": "pprint.pprint",
+    "parameters": [
+        {
+            "name": "object",
+            "type": "str",
+            "description": "Name of whom to salute. o7",
+            "options": null,
+            "regex": null
+        }
+    ]
+}

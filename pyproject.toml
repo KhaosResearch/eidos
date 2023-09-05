@@ -1,0 +1,40 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "eidos"
+version = "0.0.1"
+authors = [
+  { name="José F. Aldana Martín", email="jfaldanam@uma.es" },
+]
+description = "Validation and execution of AI functions"
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Development Status :: 1 - Planning",
+    "License :: OSI Approved :: MIT License",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    "pydantic>=2.0.0",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/KhaosResearch/eidos"
+"Bug Tracker" = "https://github.com/KhaosResearch/eidos/issues"
+
+[project.optional-dependencies]
+dev = [
+  "isort",
+  "black",
+  "coverage",
+  "ruff",
+]
+ai = [
+  "transformers",
+  "openai",
+]

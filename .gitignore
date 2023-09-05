@@ -1,0 +1,4 @@
+.env
+.venv
+PoC
+__pycache__
