@@ -1,10 +1,10 @@
 {
-    "name": "hello_world",
-    "description": "This function can be used to salute someone.'",
-    "module": "pprint.pprint",
+    "name": "salute",
+    "description": "This function can be used to salute someone.",
+    "module": "eidos.functions.core.salute",
     "parameters": [
         {
-            "name": "object",
+            "name": "who",
             "type": "str",
             "description": "Name of whom to salute. o7",
             "options": null,
