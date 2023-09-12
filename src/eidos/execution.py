@@ -24,10 +24,29 @@ def get_local_function_definition(name: str) -> dict:
 
 
 def get_openai_function_definition(name: str) -> dict:
+    """Get the definition of a function and return it in a
+    way that is compatible with OpenAI functions.
+
+    Args:
+        name (str): The name of the function.
+
+    Returns:
+        dict: The function definition in JSON Schema.
+
+    """
     function_definition = get_local_function_definition(name)
 
     AIFunction = load_model(function_definition)
-    return AIFunction.model_json_schema()
+
+    schema = AIFunction.model_json_schema()
+    # OpenAI functions expect the name to be "name" instead of "title"
+    # https://platform.openai.com/docs/api-reference/chat/create#functions-name
+    # while Pydantic uses "title" instead of "name"
+    # as specified in the JSON Schema specification
+    # https://json-schema.org/understanding-json-schema/reference/generic.html
+    schema["name"] = schema["title"]
+    del schema["title"]
+    return schema
 
 
 @lru_cache
