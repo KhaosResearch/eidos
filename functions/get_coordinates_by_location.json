@@ -1,0 +1,14 @@
+{
+    "name": "get_coordinates_by_location",
+    "description": "Get coordinates of a city, country or general location by name.",
+    "module": "eidos.functions.core.get_coordinates_by_location",
+    "parameters": [
+        {
+            "name": "location",
+            "type": "str",
+            "description": "Location to get coordinates for.",
+            "options": null,
+            "regex": null
+        }
+    ]
+}
