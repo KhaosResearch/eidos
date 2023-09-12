@@ -1,9 +1,11 @@
+import builtins
+
 from pydantic import BaseModel, Field, create_model
 
 from eidos.models.parameter import AiParameter
 
 
-def load_model(function: dict) -> BaseModel:
+def load_model(function_: dict) -> BaseModel:
     """Load the pydantic model of a function from its JSON definition.
 
     This pydantic model is compatible with OpenAI functions if exported as JSON schema.
@@ -15,20 +17,20 @@ def load_model(function: dict) -> BaseModel:
     ```
 
     Args:
-        function (dict): JSON definition of the function.
+        function_ (dict): JSON definition of the function.
 
     Returns:
         BaseModel: Pydantic model of the function.
     """
     parameters = [
-        AiParameter.model_validate(parameter) for parameter in function["parameters"]
+        AiParameter.model_validate(parameter) for parameter in function_["parameters"]
     ]
 
     ai_function = create_model(
         "AiFunction",
         **{
             v.name: (
-                eval(v.type),
+                getattr(builtins, v.type),
                 Field(
                     description=v.description,
                     pattern=v.regex,
