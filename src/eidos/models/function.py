@@ -27,7 +27,7 @@ def load_model(function_: dict) -> BaseModel:
     ]
 
     ai_function = create_model(
-        "AiFunction",
+        function_["name"],
         **{
             v.name: (
                 getattr(builtins, v.type),

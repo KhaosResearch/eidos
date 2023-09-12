@@ -24,8 +24,10 @@ async def list_functions() -> list[dict]:
     Returns:
         List of available AI functions.
     """
-
-    return available_functions()
+    return [
+        get_openai_function_definition(function_["name"])
+        for function_ in available_functions()
+    ]
 
 
 @router.get(
