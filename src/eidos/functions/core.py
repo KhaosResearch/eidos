@@ -2,7 +2,7 @@ import requests
 
 from eidos.logs import get_logger
 
-logger = get_logger()
+logger = get_logger("eidos.functions")
 
 def salute(who: str) -> str:
     """Salute someone.
@@ -11,7 +11,7 @@ def salute(who: str) -> str:
         who (str): The name of whom to salute. o7
     
     Returns:
-        str: The salutation message.
+        msg (str): The salutation message.
     """
     return f"Hello, {who}! o7"
 
@@ -23,7 +23,7 @@ def get_coordinates_by_location(location: str) -> tuple[float, float]:
         location (str): The location to get the coordinates of.
 
     Returns:
-        tuple[float, float]: The latitude and longitude of the location.
+        coordinates(tuple[float, float]): The latitude and longitude of the location.
     """
 
     endpoint = "https://nominatim.openstreetmap.org/search"
@@ -37,7 +37,8 @@ def get_coordinates_by_location(location: str) -> tuple[float, float]:
 
     if data:
         lat, lon = float(data[0]['lat']), float(data[0]['lon'])
-        return lat, lon
     else:
         logger.info(f"Location not found: {location}")
-        return None
+        raise ValueError(f"Location not found: {location}")
+
+    return (lat, lon)

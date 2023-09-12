@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from eidos.execution import available_functions, get_openai_function_definition
+from eidos.execution import available_functions, get_local_function_definition, get_openai_function_definition
 from eidos.logs import get_logger
 
 logger = get_logger("eidos.api.functions")
@@ -67,3 +67,22 @@ async def function_definition(function: str) -> dict:
     function_json = get_openai_function_definition(function)
 
     return function_json
+
+@router.get(
+    "/{function}/schema",
+    name="Get the response schema of a function",
+    tags=["functions"],
+    response_model=dict,
+)
+async def function_definition(function: str) -> dict:
+    """Get the response schema of a function.
+
+    Args:
+        function (str): Name of the function.
+
+    Returns:
+        dict: Response schema of the function.
+    """
+    function_json = get_local_function_definition(function)
+
+    return function_json["response"]
