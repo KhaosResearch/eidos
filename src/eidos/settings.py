@@ -18,6 +18,7 @@ class Settings(BaseSettings):
     api_host: str = "127.0.0.1"
     api_port: int = 6004
     log_level: str = "info"
+    functions_folder: Path = Path("functions")
 
     class Config:
         # Later files in the list will take priority over earlier files.

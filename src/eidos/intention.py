@@ -29,7 +29,8 @@ def predict_intent(
 
     Args:
         text (str): User input.
-        candidate_labels (list[str], optional): Candidate labels for the intent. Defaults to ["QuestionRequiresAnswer", "ConversationalInformation"].
+        candidate_labels (list[str], optional): Candidate labels for the intent.
+            Defaults to ["QuestionRequiresAnswer", "ConversationalInformation"].
 
     Returns:
         str, float: Predicted intent from candidate_labels and the associated score.
