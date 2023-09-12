@@ -1,6 +1,6 @@
 import argparse
 
-from eidos.api import run_server
+from eidos.api.app import run_server
 
 parser = argparse.ArgumentParser()
 subparsers = parser.add_subparsers(dest="command", help="eidos sub-commands")

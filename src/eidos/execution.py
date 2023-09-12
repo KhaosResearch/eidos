@@ -1,8 +1,41 @@
 import importlib
+import json
+from functools import lru_cache
+from pathlib import Path
 
 from eidos.logs import get_logger
+from eidos.models.function import load_model
+from eidos.settings import config
 
 logger = get_logger()
+
+
+@lru_cache
+def get_local_function_definition(name: str) -> dict:
+    file_ = Path(config.functions_folder / f"{name}.json")
+
+    if not file_.exists():
+        raise ValueError(f"Function not found: {name}")
+
+    with open(file_, "r") as json_file:
+        function_definition = json.load(json_file)
+
+    return function_definition
+
+
+def get_openai_function_definition(name: str) -> dict:
+    function_definition = get_local_function_definition(name)
+
+    AIFunction = load_model(function_definition)
+    return AIFunction.model_json_schema()
+
+
+@lru_cache
+def available_functions() -> list[dict[str, str]]:
+    return [
+        get_local_function_definition(file_.stem)
+        for file_ in config.functions_folder.glob("*.json")
+    ]
 
 
 def import_function(module: str) -> callable:
