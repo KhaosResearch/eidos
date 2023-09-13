@@ -2,6 +2,7 @@ import importlib
 import json
 from functools import lru_cache
 from pathlib import Path
+from typing import Any
 
 from eidos.logs import get_logger
 from eidos.models.function import load_model
@@ -11,7 +12,15 @@ logger = get_logger()
 
 
 @lru_cache
-def get_local_function_definition(name: str) -> dict:
+def get_eidos_function_definition(name: str) -> dict[str, Any]:
+    """Get the definition of a function in the eidos format.
+
+    Args:
+        name (str): The name of the function.
+
+    Returns:
+        dict[str, Any]: The function definition in internal format.
+    """
     file_ = Path(config.functions_folder / f"{name}.json")
 
     if not file_.exists():
@@ -23,7 +32,7 @@ def get_local_function_definition(name: str) -> dict:
     return function_definition
 
 
-def get_openai_function_definition(name: str) -> dict:
+def get_openai_function_definition(name: str) -> dict[str, Any]:
     """Get the definition of a function and return it in a
     way that is compatible with OpenAI functions.
 
@@ -31,10 +40,9 @@ def get_openai_function_definition(name: str) -> dict:
         name (str): The name of the function.
 
     Returns:
-        dict: The function definition in JSON Schema.
-
+        dict[str, Any]: The function definition in JSON Schema.
     """
-    function_definition = get_local_function_definition(name)
+    function_definition = get_eidos_function_definition(name)
 
     AIFunction = load_model(function_definition)
 
@@ -48,9 +56,14 @@ def get_openai_function_definition(name: str) -> dict:
 
 
 @lru_cache
-def available_functions() -> list[dict[str, str]]:
+def available_functions() -> list[dict[str, Any]]:
+    """Get the list of available functions.
+
+    Returns:
+        list[dict[str, str]]: The list of available functions.
+    """
     return [
-        get_local_function_definition(file_.stem)
+        get_eidos_function_definition(file_.stem)
         for file_ in config.functions_folder.glob("*.json")
     ]
 
