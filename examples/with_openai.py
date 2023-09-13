@@ -4,7 +4,7 @@ import os
 import openai
 
 from eidos.execution import import_function
-from eidos.intention import predict_intent
+from eidos.functions.classification import zero_shot_classification
 from eidos.models.function import load_model
 
 function = json.load(open("functions/hello_world.json", "r"))
@@ -21,7 +21,7 @@ user_inputs = [
 ]
 
 for user_input in user_inputs:
-    label, _ = predict_intent(user_input, candidate_labels=["Salute", "Information"])
+    label, _ = zero_shot_classification(user_input, candidate_labels=["Salute", "Information"])
 
     # Only allow tool execution if the intent is QuestionRequiresAnswer
     if label == "Salute":

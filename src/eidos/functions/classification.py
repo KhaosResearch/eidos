@@ -4,21 +4,21 @@ from eidos.logs import get_logger
 
 logger = get_logger()
 
-INTENT_CLASSIFICATION_MODEL = None
+ZERO_SHOT_CLASSIFICATION_MODEL = None
 
 
 def load_model() -> transformers.Pipeline:
     """Load the zero-shot classification model from HuggingFace if it is not loaded."""
-    global INTENT_CLASSIFICATION_MODEL
-    if INTENT_CLASSIFICATION_MODEL is None:
-        INTENT_CLASSIFICATION_MODEL = transformers.pipeline(
+    global ZERO_SHOT_CLASSIFICATION_MODEL
+    if ZERO_SHOT_CLASSIFICATION_MODEL is None:
+        ZERO_SHOT_CLASSIFICATION_MODEL = transformers.pipeline(
             "zero-shot-classification", model="facebook/bart-large-mnli"
         )
 
-    return INTENT_CLASSIFICATION_MODEL
+    return ZERO_SHOT_CLASSIFICATION_MODEL
 
 
-def predict_intent(
+def zero_shot_classification(
     text: str,
     candidate_labels: list[str] = [
         "QuestionRequiresAnswer",
