@@ -3,6 +3,7 @@ import builtins
 from pydantic import BaseModel, Field, create_model
 
 from eidos.models.parameter import AiParameter
+from eidos.validation.type import split_type_from_generic
 
 
 def load_model(function_: dict) -> BaseModel:
@@ -30,7 +31,12 @@ def load_model(function_: dict) -> BaseModel:
         function_["name"],
         **{
             v.name: (
-                getattr(builtins, v.type),
+                getattr(
+                    builtins,
+                    split_type_from_generic(v.type)[
+                        0
+                    ],  # OpenAI does not support generic types, remove it
+                ),
                 Field(
                     description=v.description,
                     pattern=v.regex,

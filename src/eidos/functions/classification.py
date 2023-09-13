@@ -2,7 +2,7 @@ import transformers
 
 from eidos.logs import get_logger
 
-logger = get_logger()
+logger = get_logger("eidos.functions")
 
 ZERO_SHOT_CLASSIFICATION_MODEL = None
 
