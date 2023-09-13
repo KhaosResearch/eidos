@@ -60,3 +60,6 @@ Example function definition:
 Two very simple examples of functions are the following:
 - Salute function: Receives a name and returns a salute. The definition of the function can be found at [functions/salute.json](functions/salute.json) and the code at [src/eidos/functions/core.py](src/eidos/functions/core.py).
 - Geocoding function: Receives a location and returns the coordinates. The definition of the function can be found at [functions/geocode.json](functions/geocode.json) and the code at [src/eidos/functions/core.py](src/eidos/functions/core.py).
+
+## Testing the API
+A [Postman](https://www.postman.com/downloads/) collection is provided for automated integration testing of the API. You can find more details at [tests](tests).
