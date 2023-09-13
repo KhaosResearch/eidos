@@ -3,7 +3,7 @@ from typing import Any
 from fastapi import APIRouter
 from fastapi.responses import JSONResponse
 
-from eidos.execution import get_local_function_definition, import_function
+from eidos.execution import get_eidos_function_definition, import_function
 from eidos.logs import get_logger
 
 logger = get_logger("eidos.api.execute")
@@ -28,7 +28,7 @@ async def execute(function_name: str, arguments: dict) -> dict[str, Any]:
     Returns:
         Result of the function execution.
     """
-    function_definition = get_local_function_definition(function_name)
+    function_definition = get_eidos_function_definition(function_name)
 
     error = None
     try:
