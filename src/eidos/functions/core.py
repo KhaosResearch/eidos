@@ -16,8 +16,9 @@ def salute(who: str) -> str:
     return f"Hello, {who}! o7"
 
 
-def get_coordinates_by_location(location: str) -> tuple[float, float]:
-    """Get the coordinates of a location using OpenStreetMap.
+def geocode(location: str) -> tuple[float, float]:
+    """Get the coordinates of a location using OpenStreetMap. This is also known as
+    geocoding.
 
     Args:
         location (str): The location to get the coordinates of.
@@ -33,9 +34,10 @@ def get_coordinates_by_location(location: str) -> tuple[float, float]:
     }
 
     response = requests.get(endpoint, params=params)
-    data = response.json()
 
-    if data:
+    # If there is no error, get the coordinates
+    if response.status_code == 200:
+        data = response.json()
         lat, lon = float(data[0]['lat']), float(data[0]['lon'])
     else:
         logger.info(f"Location not found: {location}")
