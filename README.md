@@ -17,7 +17,7 @@ pip install "eidos @ git+ssh://git@github.com/KhaosResearch/eidos.git
 ```
 
 ## Deployment
-Configuration can be made by enviromental variables, a full list of enviromental variables can be found in the [src/eidos/settings.py](src/eidos/settings.py) file.
+Configuration can be made by enviroment variables, a full list of enviroment variables can be found in the [src/eidos/settings.py](src/eidos/settings.py) file.
 ```bash
 python -m eidos server
 ```

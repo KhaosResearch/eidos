@@ -24,6 +24,7 @@ def get_eidos_function_definition(name: str) -> dict[str, Any]:
     file_ = Path(config.functions_folder / f"{name}.json")
 
     if not file_.exists():
+        logger.error(f"Function not found: {name}")
         raise ValueError(f"Function not found: {name}")
 
     with open(file_, "r") as json_file:
