@@ -29,10 +29,10 @@ Functions are defined as a json that is then transpiled to OpenAI or whatever ne
 - `module`: Full qualified name of the module and the function to execute. It ***must*** be importable in eidos.
 - `parameters`: Schema of the parameters that the function accepts.
     - `name`: Name of the parameter.
-    - `type`: Type of the parameter in Python notation. Example: `str`, `int`, `float`...
+    - `type`: Type of the parameter in Python notation. Example: `str`, `int`, `float`... List with a generic type are supported.
     - `description`: Description of the parameter.
-    - `options`: List of options that the parameter accepts. Similar to a enum. Example: `["option1", "option2"]`.
-    - `regex`: For string parameters, a regex can be specified to validate the input.
+    - `options`: List of options that the parameter accepts. Similar to a enum. Example: `["option1", "option2"]`. Can't be used along with `regex`.
+    - `regex`: For string parameters, a regex can be specified to validate the input. Can't be used along with `options`.
 - `response`: Schema of the response of the function. Keys are parameter names and values are the type of the parameter.
 
 Example function definition:

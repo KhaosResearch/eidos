@@ -12,6 +12,7 @@
         }
     ],
     "response": {
-        "coordinates": "(float, float)"
+        "latitude": "float",
+        "longitude": "float"
     }
 }
