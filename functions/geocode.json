@@ -1,7 +1,7 @@
 {
-    "name": "get_coordinates_by_location",
+    "name": "geocode",
     "description": "Get coordinates of a city, country or general location by name.",
-    "module": "eidos.functions.core.get_coordinates_by_location",
+    "module": "eidos.functions.core.geocode",
     "parameters": [
         {
             "name": "location",
