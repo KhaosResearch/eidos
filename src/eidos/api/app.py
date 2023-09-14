@@ -5,7 +5,7 @@ from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import Response
 
 from eidos import __version__
-from eidos.api.routes.execute import router as router_execute
+from eidos.api.routes.execution import router as router_execution
 from eidos.api.routes.functions import router as router_functions
 from eidos.logs import get_logger
 from eidos.settings import config
@@ -59,7 +59,7 @@ async def health():
     return Response(status_code=status.HTTP_200_OK)
 
 
-app.include_router(router_execute, prefix="/api/v1/execute")
+app.include_router(router_execution, prefix="/api/v1/execution")
 app.include_router(router_functions, prefix="/api/v1/functions")
 
 
