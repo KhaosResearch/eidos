@@ -258,7 +258,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{protocol}}://{{url}}:{{port}}/api/v1/execute/salute",
+							"raw": "{{protocol}}://{{url}}:{{port}}/api/v1/execution/salute",
 							"protocol": "{{protocol}}",
 							"host": [
 								"{{url}}"
@@ -267,7 +267,7 @@
 							"path": [
 								"api",
 								"v1",
-								"execute",
+								"execution",
 								"salute"
 							]
 						}
