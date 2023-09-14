@@ -22,6 +22,31 @@ Configuration can be made by enviroment variables, a full list of enviroment var
 python -m eidos server
 ```
 
+For scaling the API, you can use a load balancer in front of multiple instances of the API. An example of the configuration for [nginx](https://www.nginx.com/) is the following:
+
+```conf
+# nginx.conf
+upstream loadbalancer {
+    server host1.eidos.com:6004 weight=5;
+    server host2.eidos.com:6004 weight=5;
+}
+
+server {
+    location / {
+        proxy_pass http://loadbalancer;
+    }
+}
+```
+
+This can be deployed in a docker container with the following Dockerfile:
+
+```Dockerfile
+FROM nginx
+RUN rm /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+```
+
+
 ## Function definition
 Functions are defined as a json that is then transpiled to OpenAI or whatever new format emerges. Currently, the eidos description of the function has the following fields:
 - `name`: Name of the function.
