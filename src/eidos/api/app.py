@@ -12,12 +12,32 @@ from eidos.settings import config
 
 logger = get_logger("eidos.api")
 
+tags_metadata = [
+    {
+        "name": "health",
+        "description": (
+            "Health check endpoint. Useful for liveness and readiness probes."
+        ),
+    },
+    {
+        "name": "functions",
+        "description": (
+            "Operations with functions. "
+            "Mainly listing and extracting the schema of functions."
+        ),
+    },
+    {
+        "name": "execution",
+        "description": "Execution of functions.",
+    },
+]
 
 app = FastAPI(
-    title="eidos API",
-    description="Validation and execution of AI functions",
+    title="eidos",
+    description="API for the validation and execution of AI functions",
     version=__version__,
     root_path=config.root_path,
+    openapi_tags=tags_metadata,
 )
 
 app.add_middleware(
