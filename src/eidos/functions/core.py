@@ -42,3 +42,33 @@ def geocode(location: str) -> tuple[float, float]:
         raise ValueError(f"Location not found: {location}")
 
     return (lat, lon)
+
+
+def ddg_search(query: str) -> str:
+    """Search DuckDuckGo for a query. For limitations in the duckduckgo API, if there
+    is no abstract text, it only returns a link to the search results.
+    
+    Args:
+        query (str): The query to search for.
+        
+    Returns:
+        result (str): The result of the search.
+    """
+    endpoint = "https://duckduckgo.com/"
+    params = {"q": query, "format": "json", "pretty": "0"}
+
+    response = requests.get(endpoint, params=params)
+
+    if response.status_code == 200:
+        data = response.json()
+
+        if data["AbstractText"]:
+            return data["AbstractText"]
+        else:
+            return (
+                f"You can read more about {query} at "
+                f"{data['RelatedTopics'][0]['FirstURL']}"
+            )
+    else:
+        logger.info(f"Search not found: {query}")
+        raise ValueError(f"Search not found: {query}")
