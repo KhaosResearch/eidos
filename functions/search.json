@@ -1,0 +1,17 @@
+{
+    "name": "search",
+    "description": "Search the internet for information on a term.",
+    "module": "eidos.functions.core.ddg_search",
+    "parameters": [
+        {
+            "name": "query",
+            "type": "str",
+            "description": "The search term to look up.",
+            "options": null,
+            "regex": null
+        }
+    ],
+    "response": {
+        "text": "str"
+    }
+}

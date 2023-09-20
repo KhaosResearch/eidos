@@ -66,7 +66,7 @@ async def execute(function_name: str, arguments: dict) -> dict[str, Any]:
     # Validate and transform result
     try:
         validated_result = validate_output_schema(
-            result, schema=function_definition["response"]
+            result, schema=function_definition["response"].copy()
         )
     except (ValueError, TypeError) as e:
         status = 500
