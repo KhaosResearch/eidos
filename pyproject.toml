@@ -36,6 +36,3 @@ dev = [
   "black",
   "ruff",
 ]
-ai = [
-  "transformers",
-]
