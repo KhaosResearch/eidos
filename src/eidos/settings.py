@@ -11,9 +11,6 @@ class Settings(BaseSettings):
     # The root path of the API. Useful when deploying the API behind a reverse proxy.
     root_path: str = ""
 
-    # OpenAI API key
-    openai_api_key: str = ""
-
     # API settings
     api_host: str = "0.0.0.0"
     api_port: int = 6004
