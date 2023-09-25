@@ -7,7 +7,7 @@ COPY README.md .
 COPY src/ .
 COPY functions/ .
 
-RUN pip install ".[ai]"
+RUN pip install "."
 
 ENTRYPOINT [ "python", "-m", "eidos" ]
 
