@@ -4,8 +4,8 @@ WORKDIR /code
 
 COPY pyproject.toml .
 COPY README.md .
-COPY src/ .
-COPY functions/ .
+COPY src/ ./src/
+COPY functions/ ./functions/
 
 RUN pip install "."
 
