@@ -14,6 +14,12 @@ class Settings(BaseSettings):
     # API settings
     api_host: str = "0.0.0.0"
     api_port: int = 6004
+
+    api_key: str = (
+        "Gosh, why am I using a default api key? I better override it "
+        "with the API_KEY environment variable."
+    )
+
     log_level: str = "info"
     functions_folder: Path = Path("functions")
 
