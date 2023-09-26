@@ -24,7 +24,7 @@ async def execute(
 ) -> dict[str, Any]:
     """
     Executes an AI function.
-
+    \f
     Args:
         function_name: Name of the function to execute.
         arguments: Arguments to pass to the function.

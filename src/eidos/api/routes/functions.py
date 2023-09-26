@@ -22,7 +22,7 @@ router = APIRouter()
 async def list_functions(api_key: str = Security(get_api_key)) -> list[dict]:
     """
     List all available AI functions.
-
+    \f
     Args:
         api_key (str): API key.
 
@@ -44,7 +44,7 @@ async def list_functions(api_key: str = Security(get_api_key)) -> list[dict]:
 async def list_functions_names(api_key: str = Security(get_api_key)) -> list[str]:
     """
     List the names of all available AI functions.
-
+    \f
     Args:
         api_key (str): API key.
 
@@ -64,7 +64,7 @@ async def function_definition(
     function: str, api_key: str = Security(get_api_key)
 ) -> dict:
     """Get the definition of a function.
-
+    \f
     Args:
         function (str): Name of the function.
         api_key (str): API key.
@@ -85,7 +85,7 @@ async def function_definition(
 )
 async def function_schema(function: str, api_key: str = Security(get_api_key)) -> dict:
     """Get the response schema of a function.
-
+    \f
     Args:
         function (str): Name of the function.
         api_key (str): API key.
