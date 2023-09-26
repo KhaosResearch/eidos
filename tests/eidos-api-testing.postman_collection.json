@@ -50,7 +50,13 @@
 					],
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{api_key}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{protocol}}://{{url}}:{{port}}/api/v1/functions",
 							"protocol": "{{protocol}}",
@@ -97,7 +103,13 @@
 					],
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{api_key}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{protocol}}://{{url}}:{{port}}/api/v1/functions/names",
 							"protocol": "{{protocol}}",
@@ -151,7 +163,13 @@
 					],
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{api_key}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{protocol}}://{{url}}:{{port}}/api/v1/functions/salute",
 							"protocol": "{{protocol}}",
@@ -196,7 +214,13 @@
 					],
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{api_key}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{protocol}}://{{url}}:{{port}}/api/v1/functions/salute/schema",
 							"protocol": "{{protocol}}",
@@ -238,7 +262,7 @@
 									"",
 									"pm.test(\"Answer is valid\", function () {",
 									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.data).to.eql(\"Hello, world! o7\");",
+									"    pm.expect(jsonData.data.msg).to.eql(\"Hello, world! o7\");",
 									"});"
 								],
 								"type": "text/javascript"
@@ -247,7 +271,13 @@
 					],
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{api_key}}",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\"who\": \"world\"}",

@@ -1,5 +1,6 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Security
 
+from eidos.api.secure import get_api_key
 from eidos.execution import (
     available_functions,
     get_eidos_function_definition,
@@ -18,12 +19,12 @@ router = APIRouter()
     tags=["functions"],
     response_model=list[dict],
 )
-async def list_functions() -> list[dict]:
+async def list_functions(api_key: str = Security(get_api_key)) -> list[dict]:
     """
     List all available AI functions.
 
     Args:
-        None
+        api_key (str): API key.
 
     Returns:
         List of available AI functions.
@@ -40,12 +41,12 @@ async def list_functions() -> list[dict]:
     tags=["functions"],
     response_model=list[str],
 )
-async def list_functions_names() -> list[str]:
+async def list_functions_names(api_key: str = Security(get_api_key)) -> list[str]:
     """
     List the names of all available AI functions.
 
     Args:
-        None
+        api_key (str): API key.
 
     Returns:
         List of names of available AI functions.
@@ -59,11 +60,14 @@ async def list_functions_names() -> list[str]:
     tags=["functions"],
     response_model=dict,
 )
-async def function_definition(function: str) -> dict:
+async def function_definition(
+    function: str, api_key: str = Security(get_api_key)
+) -> dict:
     """Get the definition of a function.
 
     Args:
         function (str): Name of the function.
+        api_key (str): API key.
 
     Returns:
         dict: Definition of the function.
@@ -79,11 +83,12 @@ async def function_definition(function: str) -> dict:
     tags=["functions"],
     response_model=dict,
 )
-async def function_schema(function: str) -> dict:
+async def function_schema(function: str, api_key: str = Security(get_api_key)) -> dict:
     """Get the response schema of a function.
 
     Args:
         function (str): Name of the function.
+        api_key (str): API key.
 
     Returns:
         dict: Response schema of the function.
