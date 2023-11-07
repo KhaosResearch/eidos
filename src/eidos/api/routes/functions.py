@@ -2,9 +2,10 @@ from fastapi import APIRouter, Security
 
 from eidos.api.secure import get_api_key
 from eidos.execution import (
-    available_functions,
-    get_eidos_function_definition,
+    get_function_schema,
     get_openai_function_definition,
+    list_functions_names,
+    list_functions_openai,
 )
 from eidos.logs import get_logger
 
@@ -19,7 +20,7 @@ router = APIRouter()
     tags=["functions"],
     response_model=list[dict],
 )
-async def list_functions(api_key: str = Security(get_api_key)) -> list[dict]:
+async def list_functions_endpoint(api_key: str = Security(get_api_key)) -> list[dict]:
     """
     List all available AI functions.
     \f
@@ -29,10 +30,7 @@ async def list_functions(api_key: str = Security(get_api_key)) -> list[dict]:
     Returns:
         List of available AI functions.
     """
-    return [
-        get_openai_function_definition(function_["name"])
-        for function_ in available_functions()
-    ]
+    return list_functions_openai()
 
 
 @router.get(
@@ -41,7 +39,9 @@ async def list_functions(api_key: str = Security(get_api_key)) -> list[dict]:
     tags=["functions"],
     response_model=list[str],
 )
-async def list_functions_names(api_key: str = Security(get_api_key)) -> list[str]:
+async def list_functions_names_endpoint(
+    api_key: str = Security(get_api_key),
+) -> list[str]:
     """
     List the names of all available AI functions.
     \f
@@ -51,7 +51,7 @@ async def list_functions_names(api_key: str = Security(get_api_key)) -> list[str
     Returns:
         List of names of available AI functions.
     """
-    return [function_["name"] for function_ in available_functions()]
+    return list_functions_names()
 
 
 @router.get(
@@ -72,9 +72,8 @@ async def function_definition(
     Returns:
         dict: Definition of the function.
     """
-    function_json = get_openai_function_definition(function)
 
-    return function_json
+    return get_openai_function_definition(function)
 
 
 @router.get(
@@ -93,6 +92,4 @@ async def function_schema(function: str, api_key: str = Security(get_api_key)) -
     Returns:
         dict: Response schema of the function.
     """
-    function_json = get_eidos_function_definition(function)
-
-    return function_json["response"]
+    return get_function_schema(function)

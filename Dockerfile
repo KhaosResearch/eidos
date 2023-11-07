@@ -11,4 +11,6 @@ RUN pip install "."
 
 ENTRYPOINT [ "python", "-m", "eidos" ]
 
+EXPOSE 6004
+
 CMD [ "server" ]
