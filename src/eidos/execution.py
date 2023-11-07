@@ -1,4 +1,3 @@
-import importlib
 import json
 from functools import lru_cache
 from pathlib import Path
@@ -7,6 +6,8 @@ from typing import Any
 from eidos.logs import get_logger
 from eidos.models.function import load_model
 from eidos.settings import config
+from eidos.utils import import_function
+from eidos.validation.schema import validate_input_schema, validate_output_schema
 
 logger = get_logger()
 
@@ -69,34 +70,111 @@ def available_functions() -> list[dict[str, Any]]:
     ]
 
 
-def import_function(module: str) -> callable:
-    """Import a function from a module.
+def get_function_schema(function: str) -> dict[str, Any]:
+    """Get the response schema of a function.
 
     Args:
-        module (str): The module name, e.g., "pprint.pprint"
+        function (str): Name of the function.
 
     Returns:
-        callable: The function object
+        dict: Response schema of the function.
     """
+    function_json = get_eidos_function_definition(function)
 
-    if "." not in module:
-        raise ValueError("You can't import built-in modules")
+    return function_json["response"]
 
+
+def list_functions_openai() -> list[dict[str, Any]]:
+    """List all available AI functions.
+
+    Returns:
+        List of available AI functions.
+    """
+    return [
+        get_openai_function_definition(function_["name"])
+        for function_ in available_functions()
+    ]
+
+
+def list_functions_names() -> list[str]:
+    """List the names of all available AI functions.
+
+    Returns:
+        List of names of available AI functions.
+    """
+    return [function_["name"] for function_ in available_functions()]
+
+
+def execute(function_name: str, arguments: dict) -> tuple[dict[str, Any], int]:
+    """
+    Executes an AI function.
+
+    Args:
+        function_name: Name of the function to execute.
+        arguments: Arguments to pass to the function.
+
+    Returns:
+        tuple[dict[str, Any], int]: Result of the function execution and a status code.
+    """
+    function_definition = get_eidos_function_definition(function_name)
+
+    # Validate inputs
     try:
-        module_name, function_name = module.rsplit(".", 1)
-        module = importlib.import_module(module_name)
-        try:
-            function_ = getattr(module, function_name)
-            return function_
-        except AttributeError as err:
-            logger.error(
-                f"Error: Function '{function_name}' "
-                f"not found in module '{module_name}'."
-            )
-            raise err
-    except (ValueError, ImportError) as err:
-        logger.error(
-            "Error: Unable to import module or "
-            f"function from the provided name: '{module}'"
+        validate_input_schema(arguments, schema=function_definition["parameters"])
+    except (ValueError, TypeError) as e:
+        logger.error(f"Invalid input: {e}")
+        status = 400
+        response = {
+            "status": {
+                "code": status,
+                "message": f"Error: malformed function call.\n{str(e)}",
+            },
+            "data": None,
+        }
+
+        return response, status
+
+    # Execute function
+    try:
+        result = import_function(function_definition["module"])(**arguments)
+    except Exception as e:
+        logger.error(f"Error executing function {function_name}: {e}")
+        status = 500
+        response = {
+            "status": {
+                "code": status,
+                "message": f"Error: function execution failed.\n{str(e)}",
+            },
+            "data": None,
+        }
+
+        return response, status
+
+    # Validate and transform result
+    try:
+        validated_result = validate_output_schema(
+            result, schema=function_definition["response"].copy()
         )
-        raise err
+    except (ValueError, TypeError) as e:
+        status = 500
+        response = {
+            "status": {
+                "code": status,
+                "message": f"Error: function return malformed results.\n{str(e)}",
+            },
+            "data": None,
+        }
+
+        return response, status
+
+    # Return validated results
+    status = 200
+    response = {
+        "status": {
+            "code": status,
+            "message": "Success",
+        },
+        "data": validated_result,
+    }
+
+    return response, status
