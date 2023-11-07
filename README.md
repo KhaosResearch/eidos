@@ -58,6 +58,8 @@ Functions are defined as a json that is then transpiled to OpenAI or whatever ne
     - `description`: Description of the parameter.
     - `options`: List of options that the parameter accepts. Similar to a enum. Example: `["option1", "option2"]`. Can't be used along with `regex`.
     - `regex`: For string parameters, a regex can be specified to validate the input. Can't be used along with `options`.
+    - `default`: Default value of the parameter. It is ignored if the parameter is required. Default is `null` or None.
+    - `required`: If the parameter is required or not. Default is `false`.
 - `response`: Schema of the response of the function. Keys are parameter names and values are the type of the parameter.
 
 Example function definition:
@@ -72,7 +74,9 @@ Example function definition:
             "type": "str",
             "description": "Name of whom to salute. o7",
             "options": null,
-            "regex": null
+            "regex": null,
+            "default": null,
+            "required": true
         }
     ],
     "response": {

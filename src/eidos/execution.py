@@ -120,7 +120,9 @@ def execute(function_name: str, arguments: dict) -> tuple[dict[str, Any], int]:
 
     # Validate inputs
     try:
-        validate_input_schema(arguments, schema=function_definition["parameters"])
+        arguments = validate_input_schema(
+            arguments, schema=function_definition["parameters"]
+        )
     except (ValueError, TypeError) as e:
         logger.error(f"Invalid input: {e}")
         status = 400
