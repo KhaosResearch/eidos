@@ -91,7 +91,7 @@ def check_ai_parameter_types(values: dict) -> dict:
             raise ValueError("Options must be a list of unique values")
 
         for option in values["options"]:
-            if not (main_type == type(option)):
+            if not (main_type == get_type_as_string(option)):
                 raise ValueError(
                     f"Options must be a list of {values['type']}, "
                     f"but {option} is {type(option)}"
