@@ -42,6 +42,18 @@ def validate_type(value: Any, type_: str) -> bool:
         return isinstance(value, type_class)
 
 
+def get_type_as_string(x: Any) -> str:
+    """Get the type of a variable as a string.
+
+    Args:
+        x (Any): Variable to get the type from.
+
+    Returns:
+        str: Type of the variable as a string.
+    """
+    return str(type(x)).split("'")[1]
+
+
 def check_ai_parameter_types(values: dict) -> dict:
     """Check that the type is one of the allowed ones and
     that the options are of the correct type.
@@ -57,6 +69,14 @@ def check_ai_parameter_types(values: dict) -> dict:
     # Regex and options are mutually exclusive
     if values["regex"] is not None and values["options"] is not None:
         raise ValueError("Regex and options are mutually exclusive")
+
+    # Validate default value
+    if not values["required"]:
+        if values["default"] is not None:
+            if get_type_as_string(values["default"]) != main_type:
+                raise ValueError(
+                    "Default value must be of the same type as the parameter"
+                )
 
     # Validate regex
     if values["regex"] is not None:

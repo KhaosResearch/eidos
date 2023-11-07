@@ -8,7 +8,9 @@
             "type": "str",
             "description": "Name of whom to salute. o7",
             "options": null,
-            "regex": null
+            "regex": null,
+            "default": null,
+            "required": true
         }
     ],
     "response": {

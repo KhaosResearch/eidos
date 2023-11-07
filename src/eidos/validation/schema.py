@@ -30,30 +30,42 @@ def validate_output_schema(result: Any, schema: dict[str, Any]) -> dict[str, Any
     return validated_result
 
 
-def validate_input_schema(arguments: dict[str,], schema: list[dict[str, Any]]) -> None:
-    """Validate the arguments of a function against its schema.
+def validate_input_schema(
+    arguments: dict[str, Any], schema: list[dict[str, Any]]
+) -> dict[str, Any]:
+    """Validate and add any optional arguments of a function against its schema.
     Args:
         arguments (dict): Arguments to validate.
         schema (dict): Schema of the function arguments.
     Returns:
-        None
+        dict[str, Any]: Validated and transformed arguments.
     Raises:
-        ValueError: If the number of arguments does not match the number of parameters.
+        ValueError: If there is a missing argument
         ValueError: If an argument is not found in the schema.
         TypeError: If an argument is not of the correct type.
     """
-    types = [(parameter["name"], parameter["type"]) for parameter in schema]
+    schema_names = [parameter["name"] for parameter in schema]
 
-    # Check that the number of arguments matches the number of parameters
-    if len(arguments) != len(types):
-        raise ValueError(
-            f"Number of arguments ({len(arguments)}) does not match "
-            f"number of parameters ({len(types)})"
-        )
+    for key in arguments:
+        if key not in schema_names:
+            raise ValueError(f"Unknown agument {key}: not found in schema")
 
     # If they match, check that the arguments are of the correct type
-    for schema_name, type_ in types:
-        if schema_name not in arguments:
-            raise ValueError(f"Argument {schema_name} not found in arguments")
+    for parameter in schema:
+        required = parameter["required"]
+        schema_name = parameter["name"]
+        type_ = parameter["type"]
+
+        if required is None or required:  # If required is None, it is defined as True
+            if schema_name not in arguments:
+                raise ValueError(f"Argument {schema_name} not found in arguments")
+        else:  # If required is False, add the default value
+            if schema_name not in arguments:
+                arguments[schema_name] = parameter["default"]
         if not validate_type(arguments[schema_name], type_):
-            raise TypeError(f"Argument {schema_name} is not of type {type_}")
+            raise TypeError(
+                f"Argument {schema_name} is not of type {type_}. Either change the "
+                "default or provide an alternative value"
+            )
+
+    return arguments

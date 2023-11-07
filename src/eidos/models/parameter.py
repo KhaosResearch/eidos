@@ -13,6 +13,8 @@ class AiParameter(BaseModel):
     type: str
     options: Optional[list[Any]]
     regex: Optional[str]
+    required: Optional[bool] = True
+    default: Optional[Any] = None
 
     @model_validator(mode="before")
     def _check_types(cls, values: dict) -> dict:
