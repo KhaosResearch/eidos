@@ -1,21 +1,13 @@
 import logging.config
-import os
-from pathlib import Path
 
 
-def configure_logging(log_file: str = None, config: dict | None = None) -> None:
+def configure_logging(config: dict | None = None) -> None:
     """Configure logging for the application.
 
     Args:
-        log_file (str): Path to the log file.
         config (dict|None): Logging configuration. If not provided, uses a default
             console logger.
     """
-    if log_file is None:
-        log_path = os.environ.get("XDG_STATE_HOME", "~/.local/state")
-        log_file = Path(f"{log_path}/eidos/log.txt").expanduser().resolve()
-        if not log_file.is_file():
-            log_file.parent.mkdir(parents=True, exist_ok=True)
 
     DEFAULT_LOGGING_CONFIG = {
         "version": 1,
@@ -30,14 +22,6 @@ def configure_logging(log_file: str = None, config: dict | None = None) -> None:
             "console": {
                 "formatter": "basic",
                 "class": "logging.StreamHandler",
-            },
-            "rotate_file": {
-                "formatter": "basic",
-                "class": "logging.handlers.RotatingFileHandler",
-                "filename": f"{log_file}",
-                "encoding": "utf8",
-                "maxBytes": 100000,
-                "backupCount": 1,
             },
         },
         "loggers": {
