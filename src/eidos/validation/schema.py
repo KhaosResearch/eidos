@@ -59,13 +59,19 @@ def validate_input_schema(
         if required is None or required:  # If required is None, it is defined as True
             if schema_name not in arguments:
                 raise ValueError(f"Argument {schema_name} not found in arguments")
+
+            if not validate_type(arguments[schema_name], type_, allow_none=False):
+                raise TypeError(
+                    f"Argument {schema_name} is not of type {type_}. "
+                    f"Got {type(arguments[schema_name])} instead."
+                )
         else:  # If required is False, add the default value
             if schema_name not in arguments:
                 arguments[schema_name] = parameter["default"]
-        if not validate_type(arguments[schema_name], type_):
-            raise TypeError(
-                f"Argument {schema_name} is not of type {type_}. Either change the "
-                "default or provide an alternative value"
-            )
-
+            # None must be a valid type if it's marked as default.
+            if not validate_type(arguments[schema_name], type_, allow_none=True):
+                raise TypeError(
+                    f"Argument {schema_name} is not of type {type_}. "
+                    f"Got {type(arguments[schema_name])} instead."
+                )
     return arguments

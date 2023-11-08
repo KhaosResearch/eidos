@@ -20,14 +20,18 @@ def split_type_from_generic(type_: str) -> tuple[str, str | None]:
     return main_type, generic_type
 
 
-def validate_type(value: Any, type_: str) -> bool:
+def validate_type(value: Any, type_: str, allow_none: bool = False) -> bool:
     """Validate the type of a value.
     Args:
         value (Any): Value to validate.
         type (str): Type to validate the value against.
+        allow_none (bool): Whether to allow None as a valid value.
     Returns:
         bool: True if the value is of the specified type, False otherwise.
     """
+    if allow_none:
+        if value is None:
+            return True
 
     main_type, generic_type = split_type_from_generic(type_)
     if generic_type and main_type == "list":
