@@ -20,7 +20,7 @@ def validate_output_schema(result: Any, schema: dict[str, Any]) -> dict[str, Any
             raise TypeError(f"Output variable {out_variable} is not of type {type_}.")
     else:
         for (out_variable, type_), result_value in zip(schema.items(), result):
-            if validate_type(result_value, type_):
+            if validate_type(result_value, type_, allow_none=True):
                 validated_result[out_variable] = result_value
             else:
                 raise TypeError(
