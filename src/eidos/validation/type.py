@@ -37,9 +37,19 @@ def validate_type(value: Any, type_: str, allow_none: bool = False) -> bool:
     if generic_type and main_type == "list":
         main_type_class = getattr(builtins, main_type)
         generic_type_class = getattr(builtins, generic_type)
-        return isinstance(value, main_type_class) and all(
-            isinstance(v, generic_type_class) for v in value
-        )
+
+        is_list = isinstance(value, main_type_class)
+
+        if allow_none:
+            elements_are_of_correct_type = all(
+                (isinstance(v, generic_type_class) or v is None) for v in value
+            )
+        else:
+            elements_are_of_correct_type = all(
+                isinstance(v, generic_type_class) for v in value
+            )
+
+        return is_list and elements_are_of_correct_type
     else:
         type_class = getattr(builtins, type_)
 
