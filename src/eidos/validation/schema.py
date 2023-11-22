@@ -19,6 +19,14 @@ def validate_output_schema(result: Any, schema: dict[str, Any]) -> dict[str, Any
         else:
             raise TypeError(f"Output variable {out_variable} is not of type {type_}.")
     else:
+        # If result is a string, the length is 1 not len(result)
+        len_result = 1 if isinstance(result, str) else len(result)
+
+        if len_result != len(schema):
+            raise ValueError(
+                f"Number of output variables ({len_result}) does not match "
+                f"number of variables in the schema ({len(schema)})"
+            )
         for (out_variable, type_), result_value in zip(schema.items(), result):
             if validate_type(result_value, type_, allow_none=True):
                 validated_result[out_variable] = result_value
