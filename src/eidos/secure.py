@@ -2,7 +2,7 @@ from fastapi.security import APIKeyQuery
 
 from fastapi import Depends
 
-from eidos.settings import config as settings
+from eidos.settings import settings
 
 
 def validate_api_key(

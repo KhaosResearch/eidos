@@ -6,7 +6,7 @@ from pydantic import BaseModel
 from eidos import __version__
 from eidos.routes.execution import router as router_execution
 from eidos.routes.functions import router as router_functions
-from eidos.settings import config as settings
+from eidos.settings import settings
 
 log = structlog.get_logger("app")
 
