@@ -78,7 +78,7 @@ def list_functions_names() -> list[str]:
     return [fn["name"] for fn in available_functions()]
 
 
-def execute(function_name: str, arguments: dict) -> dict[str, Any]:
+def execute(function_name: str, arguments: dict | None) -> dict[str, Any]:
     """
     Executes an AI function.
 
@@ -96,19 +96,20 @@ def execute(function_name: str, arguments: dict) -> dict[str, Any]:
     except FileNotFoundError:
         raise FileNotFoundError("Error: function module not found.")
 
-    try:
-        arguments = validate_input_schema(
-            arguments, schema=function_definition["parameters"]
-        )
-    except (ValueError, TypeError) as e:
-        raise ValueError(f"Error: function arguments are malformed.\n{str(e)}")
+    # Validate input arguments against the function's schema.
+    if arguments:
+        try:
+            arguments = validate_input_schema(
+                arguments, schema=function_definition["parameters"]
+            )
+        except (ValueError, TypeError) as e:
+            raise ValueError(f"Error: function arguments are malformed.\n{str(e)}")
 
     try:
         fn = import_function(function_definition["module"])
-        result = fn(**arguments)
+        result = fn(**arguments) if arguments else fn()
     except Exception as e:
-        log.error("Error executing function", e)
-        raise Exception("Error: function execution failed.")
+        raise Exception(f"Error: function execution failed.\n{str(e)}")
 
     try:
         validated_result = validate_output_schema(
