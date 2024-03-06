@@ -2,8 +2,8 @@ import builtins
 
 from pydantic import BaseModel, Field, create_model
 
-from eidos.validation.type import parse_type_name
 from eidos.models.parameter import AiParameter
+from eidos.validation.type import parse_type_name
 
 
 def load_model(fn: dict) -> BaseModel:
