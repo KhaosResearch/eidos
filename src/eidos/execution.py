@@ -6,7 +6,7 @@ from typing import Any
 import structlog
 
 from eidos.models.function import load_model
-from eidos.settings import config
+from eidos.settings import settings
 from eidos.utils import import_function
 from eidos.validation.schema import validate_input_schema, validate_output_schema
 
