@@ -1,85 +1,89 @@
 from typing import Any
 
-from eidos.validation.type import validate_type
+from eidos.validation.type import is_value_of_type
 
 
-def validate_output_schema(result: Any, schema: dict[str, Any]) -> dict[str, Any]:
-    """Validate and transform the result of a function against its schema.
+def validate_input_schema(
+    input_arguments: dict[str, Any], schema: list[dict[str, Any]]
+) -> dict[str, Any]:
+    """Validates input arguments against a predefined schema.
+
     Args:
-        result (Any): Result of the function execution.
-        schema (dict[str, Any]): Schema of the function response.
+        input_arguments (dict): Arguments to validate.
+        schema (dict): Schema of the function arguments.
+
+    Returns:
+        dict[str, Any]: Validated and transformed arguments.
+    """
+    schema_keys = {param["name"] for param in schema}
+
+    # Check for unknown arguments.
+    for arg_key in input_arguments.keys():
+        if arg_key not in schema_keys:
+            raise ValueError(f"Unknown argument {arg_key}: not found in schema.")
+
+    validated_arguments = {}
+    for param in schema:
+        param_name = param["name"]
+        is_required = param["required"]
+        param_type = param["type"]
+        param_default = param.get("default")
+
+        if param_name not in input_arguments:
+            if is_required:
+                raise ValueError(
+                    f"Argument {param_name} is required but was not provided."
+                )
+            else:
+                validated_arguments[param_name] = param_default
+        else:
+            arg_value = input_arguments[param_name]
+            if not is_value_of_type(
+                arg_value, param_type, accept_none=param_default is None
+            ):
+                raise TypeError(
+                    f"Argument {param_name} is not of type {param_type}. Got {type(arg_value).__name__} instead."
+                )
+            validated_arguments[param_name] = arg_value
+
+    return validated_arguments
+
+
+def validate_output_schema(output: Any, schema: dict[str, Any]) -> dict[str, Any]:
+    """Validates and formats the output of a function based on a predefined schema.
+
+    Args:
+        output (Any): The output of the function to validate and format.
+        schema (dict[str, Any]): A schema defining the expected structure and types of the function output.
+            Each key in the schema represents an output variable name, and the associated
+            value specifies the expected type of that output variable.
+
     Returns:
         dict[str, Any]: Validated and transformed result.
     """
-    validated_result = {}
+    formatted_output = {}
     if len(schema) == 1:
-        out_variable, type_ = schema.popitem()
-        if validate_type(result, type_):
-            validated_result[out_variable] = result
+        variable_name, expected_type = schema.popitem()
+        if is_value_of_type(output, expected_type):
+            formatted_output[variable_name] = output
         else:
-            raise TypeError(f"Output variable {out_variable} is not of type {type_}.")
+            raise TypeError(
+                f"Output variable {variable_name} is not of the expected type {expected_type}."
+            )
     else:
-        # If result is a string, the length is 1 not len(result)
-        len_result = 1 if isinstance(result, str) else len(result)
+        len_result = 1 if isinstance(output, str) else len(output)
 
         if len_result != len(schema):
             raise ValueError(
                 f"Number of output variables ({len_result}) does not match "
                 f"number of variables in the schema ({len(schema)})"
             )
-        for (out_variable, type_), result_value in zip(schema.items(), result):
-            if validate_type(result_value, type_, allow_none=True):
-                validated_result[out_variable] = result_value
+        for (out_variable, type_), result_value in zip(schema.items(), output):
+            if is_value_of_type(result_value, type_, accept_none=True):
+                formatted_output[out_variable] = result_value
             else:
                 raise TypeError(
                     f"Output variable {out_variable} is not of type {type_}."
                 )
 
-    return validated_result
-
-
-def validate_input_schema(
-    arguments: dict[str, Any], schema: list[dict[str, Any]]
-) -> dict[str, Any]:
-    """Validate and add any optional arguments of a function against its schema.
-    Args:
-        arguments (dict): Arguments to validate.
-        schema (dict): Schema of the function arguments.
-    Returns:
-        dict[str, Any]: Validated and transformed arguments.
-    Raises:
-        ValueError: If there is a missing argument
-        ValueError: If an argument is not found in the schema.
-        TypeError: If an argument is not of the correct type.
-    """
-    schema_names = [parameter["name"] for parameter in schema]
-
-    for key in arguments:
-        if key not in schema_names:
-            raise ValueError(f"Unknown agument {key}: not found in schema")
-
-    # If they match, check that the arguments are of the correct type
-    for parameter in schema:
-        required = parameter["required"]
-        schema_name = parameter["name"]
-        type_ = parameter["type"]
-
-        if required is None or required:  # If required is None, it is defined as True
-            if schema_name not in arguments:
-                raise ValueError(f"Argument {schema_name} not found in arguments")
-
-            if not validate_type(arguments[schema_name], type_, allow_none=False):
-                raise TypeError(
-                    f"Argument {schema_name} is not of type {type_}. "
-                    f"Got {type(arguments[schema_name])} instead."
-                )
-        else:  # If required is False, add the default value
-            if schema_name not in arguments:
-                arguments[schema_name] = parameter["default"]
-            # None must be a valid type if it's marked as default.
-            if not validate_type(arguments[schema_name], type_, allow_none=True):
-                raise TypeError(
-                    f"Argument {schema_name} is not of type {type_}. "
-                    f"Got {type(arguments[schema_name])} instead."
-                )
-    return arguments
+    return formatted_output
