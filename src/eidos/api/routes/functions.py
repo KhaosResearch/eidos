@@ -7,9 +7,6 @@ from eidos.execution import (
     list_functions_names,
     list_functions_openai,
 )
-from eidos.logs import get_logger
-
-logger = get_logger("eidos.api.functions")
 
 router = APIRouter()
 

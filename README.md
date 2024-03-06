@@ -9,7 +9,7 @@ From source:
 ```bash
 git clone git@github.com:KhaosResearch/eidos.git
 cd eidos
-pip install .
+pip install -e .
 ```
 
 Or directly from GitHub:

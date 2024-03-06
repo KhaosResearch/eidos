@@ -3,14 +3,14 @@ from fastapi import FastAPI
 from starlette import status
 from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import Response
+import structlog
 
 from eidos import __version__
 from eidos.api.routes.execution import router as router_execution
 from eidos.api.routes.functions import router as router_functions
-from eidos.logs import get_logger
 from eidos.settings import config
 
-logger = get_logger("eidos.api")
+log = structlog.get_logger("eidos.api.app")
 
 tags_metadata = [
     {
@@ -64,7 +64,7 @@ app.include_router(router_functions, prefix="/api/v1/functions")
 
 
 def run_server():
-    logger.info(f"Deploying server at https://{config.api_host}:{config.api_port}")
+    log.info(f"Deploying server at https://{config.api_host}:{config.api_port}")
     uvicorn.run(
         app,
         host=config.api_host,

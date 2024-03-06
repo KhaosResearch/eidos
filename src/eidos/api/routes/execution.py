@@ -5,9 +5,6 @@ from fastapi.responses import JSONResponse
 
 from eidos.api.secure import get_api_key
 from eidos.execution import execute
-from eidos.logs import get_logger
-
-logger = get_logger("eidos.api.execute")
 
 router = APIRouter()
 

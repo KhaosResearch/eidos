@@ -3,13 +3,14 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Any
 
-from eidos.logs import get_logger
+import structlog
+
 from eidos.models.function import load_model
 from eidos.settings import config
 from eidos.utils import import_function
 from eidos.validation.schema import validate_input_schema, validate_output_schema
 
-logger = get_logger()
+log = structlog.get_logger("eidos.execution")
 
 
 @lru_cache
@@ -25,7 +26,7 @@ def get_eidos_function_definition(name: str) -> dict[str, Any]:
     file_ = Path(config.functions_folder / f"{name}.json")
 
     if not file_.exists():
-        logger.error(f"Function not found: {name}")
+        log.error("Function not found", name=name)
         raise ValueError(f"Function not found: {name}")
 
     with open(file_, "r") as json_file:
@@ -124,7 +125,7 @@ def execute(function_name: str, arguments: dict) -> tuple[dict[str, Any], int]:
             arguments, schema=function_definition["parameters"]
         )
     except (ValueError, TypeError) as e:
-        logger.error(f"Invalid input: {e}")
+        log.error("Invalid input", error=str(e))
         status = 400
         response = {
             "status": {
@@ -140,7 +141,7 @@ def execute(function_name: str, arguments: dict) -> tuple[dict[str, Any], int]:
     try:
         result = import_function(function_definition["module"])(**arguments)
     except Exception as e:
-        logger.error(f"Error executing function {function_name}: {e}")
+        log.error("Error executing function", function_name=function_name, e=str(e))
         status = 500
         response = {
             "status": {
