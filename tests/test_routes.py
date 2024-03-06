@@ -46,6 +46,18 @@ def test_function_execute():
     }
 
 
+def test_function_execute_with_no_arguments():
+    response = client.post("/api/v1/execution/salute")
+    assert response.status_code == 500
+    assert response.json() == {
+        "data": None,
+        "status": {
+            "code": 500,
+            "message": "Error: function execution failed.\nsalute() missing 1 required positional argument: 'who'",
+        },
+    }
+
+
 def test_function_execute_missing():
     response = client.post("/api/v1/execution/nonexistent", json={})
     assert response.status_code == 500

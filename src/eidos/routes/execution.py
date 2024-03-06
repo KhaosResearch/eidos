@@ -18,7 +18,7 @@ router = APIRouter()
     response_model=dict[str, Any],
 )
 async def execute_endpoint(
-    function_name: str, arguments: dict, _: str = Security(query_scheme)
+    function_name: str, arguments: dict | None = None, _: str = Security(query_scheme)
 ) -> JSONResponse:
     """Executes an AI function with the given arguments."""
     try:
