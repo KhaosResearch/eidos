@@ -1,6 +1,6 @@
 {
     "name": "salute",
-    "description": "This function can be used to salute someone.",
+    "description": "Say hello to someone.",
     "module": "eidos.functions.core.salute",
     "parameters": [
         {
