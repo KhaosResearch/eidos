@@ -2,52 +2,34 @@
 
 eidos is an API for validating and executing AI functions. It aims to be a generic API to serve as a common interface to allow execution of functions by LLMs.
 
-## Why "Eidos"?
-The name "Eidos" was chosen for this project to symbolize our dedication to achieving perfection and validating idealized forms or concepts. In Greek mythology, Eidos represented these perfected forms. Similarly, our project aims to embody and represent excellence in its pursuit of its objectives.
+## Install
 
-## Installation
-To install eidos:
+From source:
 
 ```bash
 git clone git@github.com:KhaosResearch/eidos.git
 cd eidos
 pip install .
-# or to install without cloning
+```
+
+Or directly from GitHub:
+
+```bash
 pip install "eidos @ git+ssh://git@github.com/KhaosResearch/eidos.git
 ```
 
-## Deployment
-Configuration can be made by enviroment variables, a full list of enviroment variables can be found in the [src/eidos/settings.py](src/eidos/settings.py) file.
+## Run
+
+Run the API with the following command:
+
 ```bash
-python -m eidos server
+uvicorn src.eidos.main:app --host 0.0.0.0 --port 8090 --reload
 ```
 
-For scaling the API, you can use a load balancer in front of multiple instances of the API. An example of the configuration for [nginx](https://www.nginx.com/) is the following:
-
-```conf
-# nginx.conf
-upstream loadbalancer {
-    server host1.eidos.com:6004 weight=5;
-    server host2.eidos.com:6004 weight=5;
-}
-
-server {
-    location / {
-        proxy_pass http://loadbalancer;
-    }
-}
-```
-
-This can be deployed in a docker container with the following Dockerfile:
-
-```Dockerfile
-FROM nginx
-RUN rm /etc/nginx/conf.d/default.conf
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-```
-
+You can override the default configuration by setting [environment variables](src/eidos/settings.py).
 
 ## Function definition
+
 Functions are defined as a json that is then transpiled to OpenAI or whatever new format emerges. Currently, the eidos description of the function has the following fields:
 - `name`: Name of the function.
 - `description`: Description of the function.
@@ -85,8 +67,8 @@ Example function definition:
 }
 ```
 
-
 A very simple example of a function is the Salute function: Receives a name and returns a salute. The definition of the function can be found at [functions/salute.json](functions/salute.json) and the code at [src/eidos/functions/core.py](src/eidos/functions/core.py).
 
-## Testing the API
+## Testing
+
 A [Postman](https://www.postman.com/downloads/) collection is provided for automated integration testing of the API. You can find more details at [tests](tests).
