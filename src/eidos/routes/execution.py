@@ -1,10 +1,13 @@
 from typing import Any
 
+import structlog
 from fastapi import APIRouter, Security
 from fastapi.responses import JSONResponse
 
+from eidos.execute import execute
 from eidos.secure import get_api_key
-from eidos.execution import execute
+
+log = structlog.get_logger("eidos.execution")
 
 router = APIRouter()
 
@@ -16,18 +19,30 @@ router = APIRouter()
     response_model=dict[str, Any],
 )
 async def execute_endpoint(
-    function_name: str, arguments: dict, api_key: str = Security(get_api_key)
-) -> dict[str, Any]:
-    """
-    Executes an AI function.
-    \f
-    Args:
-        function_name: Name of the function to execute.
-        arguments: Arguments to pass to the function.
-        api_key: API key.
-
-    Returns:
-        Result of the function execution.
-    """
-    response, status = execute(function_name, arguments)
-    return JSONResponse(response, status_code=status)
+    function_name: str, arguments: dict, _: str = Security(get_api_key)
+) -> JSONResponse:
+    """Executes an AI function with the given arguments."""
+    try:
+        data = execute(function_name, arguments)
+        response, status = (
+            {
+                "status": {
+                    "code": 200,
+                    "message": "Success",
+                },
+                "data": data,
+            },
+            200,
+        )
+    except Exception as e:
+        response, status = (
+            {
+                "status": {
+                    "code": 500,
+                    "message": str(e),
+                },
+                "data": None,
+            },
+            500,
+        )
+    return JSONResponse(content=response, status_code=status)
