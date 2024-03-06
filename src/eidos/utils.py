@@ -1,8 +1,25 @@
 import importlib
+import json
+from functools import lru_cache
+from pathlib import Path
 
 import structlog
 
 log = structlog.get_logger("eidos.utils")
+
+
+@lru_cache(maxsize=128)
+def json_load(file_path: str | Path) -> dict:
+    """Loads a JSON file.
+
+    Args:
+        file_path (str): The file path.
+
+    Returns:
+        dict: The JSON file as a dictionary.
+    """
+    with open(file_path, "r") as json_file:
+        return json.load(json_file)
 
 
 def import_function(module: str) -> callable:
@@ -14,10 +31,8 @@ def import_function(module: str) -> callable:
     Returns:
         callable: The function object
     """
-
     if "." not in module:
         raise ValueError("You can't import built-in modules")
-
     try:
         module_name, function_name = module.rsplit(".", 1)
         module = importlib.import_module(module_name)
@@ -26,11 +41,11 @@ def import_function(module: str) -> callable:
             return function_
         except AttributeError as err:
             log.error(
-                "Function not found in module", module_name=module_name, function_name=function_name
+                "Error: Function not found in module",
+                module_name=module_name,
+                function_name=function_name,
             )
             raise err
     except (ValueError, ImportError) as err:
-        log.error(
-            "Error: Unable to import module or function from the provided name", module_name=module_name
-        )
+        log.error("Error: Failed to import function", module_name=module)
         raise err

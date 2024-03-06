@@ -1,12 +1,15 @@
+import structlog
 from fastapi import APIRouter, Security
 
-from eidos.secure import get_api_key
-from eidos.execution import (
+from eidos.execute import (
     get_function_schema,
     get_openai_function_definition,
     list_functions_names,
     list_functions_openai,
 )
+from eidos.secure import get_api_key
+
+log = structlog.get_logger("eidos.functions")
 
 router = APIRouter()
 
@@ -17,16 +20,8 @@ router = APIRouter()
     tags=["functions"],
     response_model=list[dict],
 )
-async def list_functions_endpoint(api_key: str = Security(get_api_key)) -> list[dict]:
-    """
-    List all available AI functions.
-    \f
-    Args:
-        api_key (str): API key.
-
-    Returns:
-        List of available AI functions.
-    """
+async def list_functions_endpoint(_: str = Security(get_api_key)) -> list[dict]:
+    """List all available functions."""
     return list_functions_openai()
 
 
@@ -36,18 +31,8 @@ async def list_functions_endpoint(api_key: str = Security(get_api_key)) -> list[
     tags=["functions"],
     response_model=list[str],
 )
-async def list_functions_names_endpoint(
-    api_key: str = Security(get_api_key),
-) -> list[str]:
-    """
-    List the names of all available AI functions.
-    \f
-    Args:
-        api_key (str): API key.
-
-    Returns:
-        List of names of available AI functions.
-    """
+async def list_functions_names_endpoint(_: str = Security(get_api_key)) -> list[str]:
+    """List function names."""
     return list_functions_names()
 
 
@@ -57,19 +42,8 @@ async def list_functions_names_endpoint(
     tags=["functions"],
     response_model=dict,
 )
-async def function_definition(
-    function: str, api_key: str = Security(get_api_key)
-) -> dict:
-    """Get the definition of a function.
-    \f
-    Args:
-        function (str): Name of the function.
-        api_key (str): API key.
-
-    Returns:
-        dict: Definition of the function.
-    """
-
+async def function_definition(function: str, _: str = Security(get_api_key)) -> dict:
+    """Get the definition of a function."""
     return get_openai_function_definition(function)
 
 
@@ -79,14 +53,6 @@ async def function_definition(
     tags=["functions"],
     response_model=dict,
 )
-async def function_schema(function: str, api_key: str = Security(get_api_key)) -> dict:
-    """Get the response schema of a function.
-    \f
-    Args:
-        function (str): Name of the function.
-        api_key (str): API key.
-
-    Returns:
-        dict: Response schema of the function.
-    """
+async def function_schema(function: str, _: str = Security(get_api_key)) -> dict:
+    """Get the response schema of a function."""
     return get_function_schema(function)
