@@ -13,4 +13,4 @@ def validate_api_key(
     return api_key == settings.api_key
 
 
-get_api_key = validate_api_key
+query_scheme = validate_api_key

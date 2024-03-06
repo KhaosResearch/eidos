@@ -5,7 +5,7 @@ from fastapi import APIRouter, Security
 from fastapi.responses import JSONResponse
 
 from eidos.execute import execute
-from eidos.secure import get_api_key
+from eidos.secure import query_scheme
 
 log = structlog.get_logger("eidos.execution")
 
@@ -19,7 +19,7 @@ router = APIRouter()
     response_model=dict[str, Any],
 )
 async def execute_endpoint(
-    function_name: str, arguments: dict, _: str = Security(get_api_key)
+    function_name: str, arguments: dict, _: str = Security(query_scheme)
 ) -> JSONResponse:
     """Executes an AI function with the given arguments."""
     try:
