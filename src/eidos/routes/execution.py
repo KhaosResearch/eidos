@@ -3,7 +3,7 @@ from typing import Any
 from fastapi import APIRouter, Security
 from fastapi.responses import JSONResponse
 
-from eidos.api.secure import get_api_key
+from eidos.secure import get_api_key
 from eidos.execution import execute
 
 router = APIRouter()
