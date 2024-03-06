@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Security
 
-from eidos.api.secure import get_api_key
+from eidos.secure import get_api_key
 from eidos.execution import (
     get_function_schema,
     get_openai_function_definition,
