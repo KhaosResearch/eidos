@@ -32,7 +32,6 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
-  "isort",
-  "black",
-  "ruff",
+    "ruff",
+    "pytest",
 ]

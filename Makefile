@@ -1,10 +1,10 @@
 .PHONY: lint format tests
+
 lint:
-	@python -m ruff src/
+	@python -m ruff --extend-select I src/ tests/
 
 format:
-	@python -m black src/
-	@python -m isort --profile black src/
+	@python -m ruff format src/ tests/
 
 tests:
-	@newman run tests/eidos-api-testing.postman_collection.json -e tests/development.postman_environment.json
+	@python -m pytest tests/
