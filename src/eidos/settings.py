@@ -1,10 +1,9 @@
 from pathlib import Path
 
+import structlog
 from pydantic_settings import BaseSettings
 
-from eidos.logs import get_logger
-
-logger = get_logger()
+log = structlog.get_logger("eidos.settings")
 
 
 class Settings(BaseSettings):
@@ -28,7 +27,7 @@ class Settings(BaseSettings):
         env_file = [".env", ".env.prod"]
         for f in reversed(env_file):
             if Path(f).exists():
-                logger.info(f"Loading environment variables from file {f}")
+                log.info("Loading environment variables from file", file=f)
                 break
         env_file_encoding = "utf-8"
 

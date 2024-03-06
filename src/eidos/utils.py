@@ -1,8 +1,8 @@
 import importlib
 
-from eidos.logs import get_logger
+import structlog
 
-logger = get_logger()
+log = structlog.get_logger("eidos.utils")
 
 
 def import_function(module: str) -> callable:
@@ -25,14 +25,12 @@ def import_function(module: str) -> callable:
             function_ = getattr(module, function_name)
             return function_
         except AttributeError as err:
-            logger.error(
-                f"Error: Function '{function_name}' "
-                f"not found in module '{module_name}'."
+            log.error(
+                "Function not found in module", module_name=module_name, function_name=function_name
             )
             raise err
     except (ValueError, ImportError) as err:
-        logger.error(
-            "Error: Unable to import module or "
-            f"function from the provided name: '{module}'"
+        log.error(
+            "Error: Unable to import module or function from the provided name", module_name=module_name
         )
         raise err

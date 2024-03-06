@@ -1,8 +1,3 @@
-from eidos.logs import get_logger
-
-logger = get_logger("eidos.functions")
-
-
 def salute(who: str) -> str:
     """Salute someone.
 
