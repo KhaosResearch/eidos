@@ -7,7 +7,7 @@ from eidos.execute import (
     list_functions_names,
     list_functions_openai,
 )
-from eidos.secure import get_api_key
+from eidos.secure import query_scheme
 
 log = structlog.get_logger("eidos.functions")
 
@@ -20,7 +20,7 @@ router = APIRouter()
     tags=["functions"],
     response_model=list[dict],
 )
-async def list_functions_endpoint(_: str = Security(get_api_key)) -> list[dict]:
+async def list_functions_endpoint(_: str = Security(query_scheme)) -> list[dict]:
     """List all available functions."""
     return list_functions_openai()
 
@@ -31,7 +31,7 @@ async def list_functions_endpoint(_: str = Security(get_api_key)) -> list[dict]:
     tags=["functions"],
     response_model=list[str],
 )
-async def list_functions_names_endpoint(_: str = Security(get_api_key)) -> list[str]:
+async def list_functions_names_endpoint(_: str = Security(query_scheme)) -> list[str]:
     """List function names."""
     return list_functions_names()
 
@@ -42,7 +42,7 @@ async def list_functions_names_endpoint(_: str = Security(get_api_key)) -> list[
     tags=["functions"],
     response_model=dict,
 )
-async def function_definition(function: str, _: str = Security(get_api_key)) -> dict:
+async def function_definition(function: str, _: str = Security(query_scheme)) -> dict:
     """Get the definition of a function."""
     return get_openai_function_definition(function)
 
@@ -53,6 +53,6 @@ async def function_definition(function: str, _: str = Security(get_api_key)) -> 
     tags=["functions"],
     response_model=dict,
 )
-async def function_schema(function: str, _: str = Security(get_api_key)) -> dict:
+async def function_schema(function: str, _: str = Security(query_scheme)) -> dict:
     """Get the response schema of a function."""
     return get_function_schema(function)
