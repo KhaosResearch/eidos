@@ -23,7 +23,7 @@ pip install "eidos @ git+ssh://git@github.com/KhaosResearch/eidos.git
 Run the API with the following command:
 
 ```bash
-uvicorn src.eidos.main:app --host 0.0.0.0 --port 8090 --reload
+uvicorn eidos.main:app --host 0.0.0.0 --port 8090 --reload
 ```
 
 You can override the default configuration by setting [environment variables](src/eidos/settings.py).
@@ -32,7 +32,13 @@ Alternatively, you can use the provided [Dockerfile](Dockerfile) to build a Dock
 
 ```bash
 docker build -t eidos .
-docker run -v $(pwd)/functions:/code/functions -p 8090:80 eidos
+docker run -v $(pwd)/functions:/functions -p 8090:80 eidos
+```
+
+Example:
+
+```bash
+curl -X POST -H "Content-Type: application/json" -d '{"who": "me"}' http://localhost:8090/api/v1/execution/salute
 ```
 
 ## Testing

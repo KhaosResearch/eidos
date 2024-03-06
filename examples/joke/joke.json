@@ -1,0 +1,8 @@
+{
+    "name": "joke",
+    "description": "Tell a joke",
+    "module": "joke.main.say_joke",
+    "response": {
+        "msg": "str"
+    }
+}
