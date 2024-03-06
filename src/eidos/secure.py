@@ -1,6 +1,5 @@
-from fastapi.security import APIKeyQuery
-
 from fastapi import Depends
+from fastapi.security import APIKeyQuery
 
 from eidos.settings import settings
 

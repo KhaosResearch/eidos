@@ -1,11 +1,10 @@
 from typing import Any
 
 import structlog
-from fastapi import APIRouter, Security
-from fastapi.responses import JSONResponse
-
 from eidos.execute import execute
 from eidos.secure import query_scheme
+from fastapi import APIRouter, Security
+from fastapi.responses import JSONResponse
 
 log = structlog.get_logger("eidos.execution")
 

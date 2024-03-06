@@ -1,6 +1,4 @@
 import structlog
-from fastapi import APIRouter, Security
-
 from eidos.execute import (
     get_function_schema,
     get_openai_function_definition,
@@ -8,6 +6,7 @@ from eidos.execute import (
     list_functions_openai,
 )
 from eidos.secure import query_scheme
+from fastapi import APIRouter, Security
 
 log = structlog.get_logger("eidos.functions")
 
