@@ -28,6 +28,13 @@ uvicorn src.eidos.main:app --host 0.0.0.0 --port 8090 --reload
 
 You can override the default configuration by setting [environment variables](src/eidos/settings.py).
 
+Alternatively, you can use the provided [Dockerfile](Dockerfile) to build a Docker image and run the API in a container:
+
+```bash
+docker build -t eidos .
+docker run -v $(pwd)/functions:/code/functions -p 8090:80 eidos
+```
+
 ## Testing
 
 `pytest` is used for testing. You can run the tests with the following command:
