@@ -22,6 +22,7 @@ async def execute_endpoint(
 ) -> JSONResponse:
     """Executes an AI function with the given arguments."""
     try:
+        log.info("Executing function", function=function_name, arguments=arguments)
         data = execute(function_name, arguments)
         response, status = (
             {

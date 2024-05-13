@@ -24,7 +24,6 @@ dependencies = [
     "pydantic-settings>=2.0.0",
     "fastapi>=0.103.0",
     "structlog",
-    "uvicorn",
 ]
 
 [project.urls]

@@ -1,5 +1,8 @@
 FROM python:3.10
 
+# Install ASGI server
+RUN pip install uvicorn
+
 WORKDIR /code
 
 COPY README.md /code/README.md
@@ -13,4 +16,4 @@ RUN pip install "."
 
 EXPOSE 80
 
-CMD ["uvicorn", "--app-dir", "/code", "src.eidos.main:app", "--host", "0.0.0.0", "--port", "80"]
+CMD ["uvicorn", "eidos.api:app", "--host", "0.0.0.0", "--port", "80"]

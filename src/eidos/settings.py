@@ -9,7 +9,8 @@ log = structlog.get_logger("eidos.settings")
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         # `.env.prod` takes priority over `.env`
-        env_file=(".env", ".env.prod")
+        env_file=(".env", ".env.prod"),
+        extra="ignore"
     )
 
     # The root path of the API. Useful when deploying the API behind a reverse proxy.
