@@ -25,9 +25,9 @@ def validate_input_schema(
     validated_arguments = {}
     for param in schema:
         param_name = param["name"]
-        is_required = param["required"]
+        is_required = param.get("required", True)
         param_type = param["type"]
-        param_default = param.get("default")
+        param_default = param.get("default", None)
 
         if param_name not in input_arguments:
             if is_required:

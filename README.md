@@ -23,7 +23,7 @@ pip install "eidos @ git+ssh://git@github.com/KhaosResearch/eidos.git
 Run the API with the following command:
 
 ```bash
-uvicorn eidos.main:app --host 0.0.0.0 --port 8090 --reload
+uvicorn eidos.api:app --host 0.0.0.0 --port 8090 --reload
 ```
 
 You can override the default configuration by setting [environment variables](src/eidos/settings.py).

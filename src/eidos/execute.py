@@ -103,12 +103,14 @@ def execute(function_name: str, arguments: dict | None) -> dict[str, Any]:
                 arguments, schema=function_definition["parameters"]
             )
         except (ValueError, TypeError) as e:
+            log.error("Error: function arguments are malformed.", error=str(e))
             raise ValueError(f"Error: function arguments are malformed.\n{str(e)}")
 
     try:
         fn = import_function(function_definition["module"])
         result = fn(**arguments) if arguments else fn()
     except Exception as e:
+        log.error("Error: function execution failed.", error=str(e))
         raise Exception(f"Error: function execution failed.\n{str(e)}")
 
     try:
@@ -116,6 +118,7 @@ def execute(function_name: str, arguments: dict | None) -> dict[str, Any]:
             result, schema=function_definition["response"].copy()
         )
     except (ValueError, TypeError) as e:
+        log.error("Error: function result is malformed.", error=str(e))
         raise ValueError(f"Error: function result is malformed.\n{str(e)}")
 
     return validated_result

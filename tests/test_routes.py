@@ -1,4 +1,4 @@
-from eidos.main import app
+from eidos.api import app
 from fastapi.testclient import TestClient
 
 client = TestClient(app)
