@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eidos-deployment
+  labels:
+    app: eidos
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: eidos
+  template:
+    metadata:
+      labels:
+        app: eidos
+    spec:
+      containers:
+      - name: eidos
+        image: ghcr.io/khaosresearch/eidos:v1.0.0 # This image must be changed to deploy a custom functions
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            memory: "1Gi"
+            cpu: "1"
+          requests:
+            memory: "256Mi"
+            cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: eidos-service
+spec:
+  type: NodePort
+  selector:
+    app: eidos
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80

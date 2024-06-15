@@ -41,6 +41,8 @@ Example:
 curl -X POST -H "Content-Type: application/json" -d '{"who": "me"}' http://localhost:8090/api/v1/execution/salute
 ```
 
+To deploy the container in Kubernetes, a reference deployment is available and documented at [deployments](deployments/).
+
 ## Testing
 
 `pytest` is used for testing. You can run the tests with the following command:
