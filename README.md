@@ -17,7 +17,7 @@ pip install -e .
 Or directly from GitHub:
 
 ```bash
-pip install "eidos @ git+ssh://git@github.com/KhaosResearch/eidos.git
+pip install "eidos @ git+ssh://git@github.com/KhaosResearch/eidos.git"
 ```
 
 ## Run
