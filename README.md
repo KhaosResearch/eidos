@@ -2,6 +2,8 @@
 
 eidos is an API for validating and executing AI functions. It aims to be a generic API to serve as a common interface to allow execution of functions by LLMs.
 
+![Usage diagram of eidos](assets/eidos.png)
+
 ## Install
 
 From source:
