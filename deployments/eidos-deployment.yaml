@@ -27,6 +27,22 @@ spec:
           requests:
             memory: "256Mi"
             cpu: "500m"
+        env:
+          - name: API_KEY
+            valueFrom:
+              configMapKeyRef:
+                name: eidos-configmap
+                key: EIDOS_API_KEY
+          - name: ROOT_PATH
+            valueFrom:
+              configMapKeyRef:
+                name: eidos-configmap
+                key: EIDOS_ROOT_PATH
+          - name: FUNCTIONS_FOLDER
+            valueFrom:
+              configMapKeyRef:
+                name: eidos-configmap
+                key: EIDOS_FUNCTIONS_FOLDER
 ---
 apiVersion: v1
 kind: Service
@@ -40,3 +56,12 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 80
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: eidos-configmap
+data:
+  EIDOS_API_KEY: "Sample_API_key_for_eidos"
+  EIDOS_ROOT_PATH: "/eidos"
+  EIDOS_FUNCTIONS_FOLDER: "functions"
