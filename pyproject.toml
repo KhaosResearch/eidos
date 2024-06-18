@@ -5,7 +5,10 @@ build-backend = "hatchling.build"
 [project]
 name = "eidos"
 version = "1.0.0"
-authors = [{ name = "José F. Aldana Martín", email = "jfaldanam@uma.es" }]
+authors = [  
+  { name="José F. Aldana Martín", email="jfaldanam@uma.es" },
+  { name="Antonio Benítez Hidalgo", email="antonio.b@uma.es" },
+]
 description = "Validation and execution of AI functions"
 readme = "README.md"
 requires-python = ">=3.10"
