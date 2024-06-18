@@ -19,7 +19,7 @@ jobs:
         registry: ghcr.io
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
-    - name: Build and push Docker images
+    - name: Build and push the base Docker image
       uses: docker/build-push-action@v4.1.0
       with:
         context: .
@@ -28,3 +28,12 @@ jobs:
         cache-from: type=gha
         cache-to: type=gha,mode=max
         tags: ghcr.io/khaosresearch/eidos:latest,ghcr.io/khaosresearch/eidos:${{ github.event.release.tag_name }}
+    - name: Build and push the lambda Docker image
+      uses: docker/build-push-action@v4.1.0
+      with:
+        context: .
+        file: ./Dockerfile.lambda
+        push: true
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+        tags: ghcr.io/khaosresearch/eidos-lambda:latest,ghcr.io/khaosresearch/eidos-lambda:${{ github.event.release.tag_name }}
