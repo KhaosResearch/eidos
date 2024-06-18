@@ -38,7 +38,7 @@ Alternatively, you can use the provided [Dockerfile](Dockerfile) to build a Dock
 
 ```bash
 docker build -t eidos-server:latest .
-docker run -v $(pwd)/functions:/functions -p 8090:80 eidos-server:latest
+docker run --rm  -v $(pwd)/functions:/functions -p 8090:80 eidos-server:latest
 ```
 
 Example:
@@ -49,26 +49,25 @@ curl -X POST -H "Content-Type: application/json" -d '{"who": "me"}' http://local
 
 * Kubernetes
 
-To deploy the container in Kubernetes, a reference deployment is available and documented at [deployments](deployments/).
+To deploy the container in Kubernetes, a reference deployment is available and documented at [manifests](manifests/).
 
 * Serverless in AWS
-
-# Semantic search of database of documents
-
 Another docker image to deploy serverless in AWS Lambda is provided in [Dockerfile.lambda](Dockerfile.lambda). The image is based on the official AWS Lambda Python 3.11 image. For extending this image the process is the same as the main image.
 
-```console
-$ docker build -t eidos-lambda -f Dockerfile.lambda .
+```bash
+docker build -t eidos-lambda -f Dockerfile.lambda .
 ```
 
 Run the container locally with the following command or deploy in AWS Lambda as a docker container image:
+
 ```bash
-docker run --rm -p 9001:8080 eidos-lambda
+docker run --rm -p 8091:8080 eidos-lambda
 ```
 
 Invoke the function for local testing with sample query
+
 ```bash
-curl -XPOST "http://localhost:9001/2015-03-31/functions/function/invocations" -d '{"command": "EXECUTE", "parameters": {"function": "salute", "args": {"who": "me, I am executing serverless"}}}'
+curl -XPOST "http://localhost:8091/2015-03-31/functions/function/invocations" -d '{"command": "EXECUTE", "parameters": {"function": "salute", "args": {"who": "me, I am executing serverless"}}}'
 ```
 
 ## Testing

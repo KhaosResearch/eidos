@@ -14,7 +14,7 @@ ENV EIDOS_ENV production
 
 ENV EIDOS_FUNCTIONS_FOLDER /functions
 
-RUN pip install "."
+RUN pip install --no-cache-dir "."
 
 EXPOSE 80
 
