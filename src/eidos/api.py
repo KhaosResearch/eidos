@@ -10,6 +10,12 @@ from eidos.settings import settings
 
 log = structlog.get_logger("app")
 
+if not settings.api_key and settings.is_production():
+    log.warning("No API key defined. Please set an API key in the settings.")
+
+if settings.root_path:
+    log.info(f"Root path set to {settings.root_path}")
+
 openapi_tags = [
     {
         "name": "health",
@@ -33,7 +39,8 @@ app = FastAPI(
     version=__version__,
     root_path=settings.root_path,
     openapi_tags=openapi_tags,
-    docs_url="/api/docs",
+    docs_url=None if settings.is_production() else "/docs",
+    redoc_url=None if settings.is_production() else "/redoc",
 )
 
 origins = ["*"]

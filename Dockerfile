@@ -10,7 +10,9 @@ COPY ./src /code/src
 COPY ./pyproject.toml /code/pyproject.toml
 COPY ./functions /functions
 
-ENV FUNCTIONS_FOLDER /functions
+ENV EIDOS_ENV production
+
+ENV EIDOS_FUNCTIONS_FOLDER /functions
 
 RUN pip install "."
 

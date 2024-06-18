@@ -1,7 +1,19 @@
 from eidos.api import app
+from eidos.secure import query_scheme
 from fastapi.testclient import TestClient
 
-client = TestClient(app)
+client = TestClient(
+    app,
+    # Remove the root path (if any).
+    root_path="",
+)
+
+
+async def override_query_scheme():
+    return
+
+
+app.dependency_overrides[query_scheme] = override_query_scheme
 
 
 def test_healthz():
