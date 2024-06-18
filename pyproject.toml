@@ -5,9 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "eidos"
 version = "1.0.0"
-authors = [
-  { name="José F. Aldana Martín", email="jfaldanam@uma.es" },
-]
+authors = [{ name = "José F. Aldana Martín", email = "jfaldanam@uma.es" }]
 description = "Validation and execution of AI functions"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -31,8 +29,8 @@ dependencies = [
 "Bug Tracker" = "https://github.com/KhaosResearch/eidos/issues"
 
 [project.optional-dependencies]
-dev = [
-    "ruff",
-    "pytest",
-    "httpx",
-]
+dev = ["ruff", "pytest", "httpx"]
+
+[tool.pyright]
+venv = ".venv"
+venvPath = "."
