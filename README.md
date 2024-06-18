@@ -1,6 +1,6 @@
 # eidos:  Validation and execution of AI functions
 
-eidos is an API for validating and executing AI functions. It aims to be a generic API to serve as a common interface to allow execution of functions by LLMs.
+_eidos_ is an API for validating and executing AI functions. It aims to be a generic API to serve as a common interface to allow execution of functions by LLMs.
 
 ![Usage diagram of eidos](assets/eidos.png)
 
@@ -11,13 +11,13 @@ From source:
 ```bash
 git clone git@github.com:KhaosResearch/eidos.git
 cd eidos
-pip install -e .
+python -m pip install -e .
 ```
 
 Or directly from GitHub:
 
 ```bash
-pip install "eidos @ git+ssh://git@github.com/KhaosResearch/eidos.git"
+python -m pip install "eidos @ git+ssh://git@github.com/KhaosResearch/eidos.git"
 ```
 
 ## Run
@@ -33,8 +33,8 @@ You can override the default configuration by setting [environment variables](sr
 Alternatively, you can use the provided [Dockerfile](Dockerfile) to build a Docker image and run the API in a container:
 
 ```bash
-docker build -t eidos .
-docker run -v $(pwd)/functions:/functions -p 8090:80 eidos
+docker build -t eidos-server:latest .
+docker run -v $(pwd)/functions:/functions -p 8090:80 eidos-server:latest
 ```
 
 Example:
