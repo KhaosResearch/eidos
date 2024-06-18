@@ -21,8 +21,8 @@ async def execute_endpoint(
     function_name: str, arguments: dict | None = None, _: str = Security(query_scheme)
 ) -> JSONResponse:
     """Executes an AI function with the given arguments."""
+    log.info("Running function", function=function_name, arguments=arguments)
     try:
-        log.info("Executing function", function=function_name, arguments=arguments)
         data = execute(function_name, arguments)
         response, status = (
             {
