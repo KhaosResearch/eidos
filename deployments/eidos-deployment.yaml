@@ -37,16 +37,21 @@ spec:
               memory: "256Mi"
               cpu: "500m"
           env:
-            - name: EIDOS_API_KEY
+            - name: EIDOS_ENV
               valueFrom:
                 configMapKeyRef:
                   name: eidos-configmap
-                  key: EIDOS_API_KEY
+                  key: EIDOS_ENV
             - name: EIDOS_ROOT_PATH
               valueFrom:
                 configMapKeyRef:
                   name: eidos-configmap
                   key: EIDOS_ROOT_PATH
+            - name: EIDOS_API_KEY
+              valueFrom:
+                configMapKeyRef:
+                  name: eidos-configmap
+                  key: EIDOS_API_KEY
             - name: EIDOS_FUNCTIONS_FOLDER
               valueFrom:
                 configMapKeyRef:
@@ -73,6 +78,7 @@ metadata:
   name: eidos-configmap
   namespace: eidos-namespace
 data:
+  EIDOS_ENV: "production"
   EIDOS_ROOT_PATH: "/eidos"
   EIDOS_API_KEY: "changeme"
   EIDOS_FUNCTIONS_FOLDER: "functions"
