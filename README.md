@@ -1,5 +1,10 @@
 # eidos:  Validation and execution of AI functions
 
+[![Linter: Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+![Python Version from PEP 621 TOML](https://img.shields.io/python/required-version-toml?tomlFilePath=https%3A%2F%2Fraw.githubusercontent.com%2FKhaosResearch%2Feidos%2Fmaster%2Fpyproject.toml)
+![GitHub Release](https://img.shields.io/github/v/release/KhaosResearch/eidos)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/KhaosResearch/eidos/test.yaml?label=CI)
+
 _eidos_ is an API for validating and executing AI functions. It aims to be a generic API to serve as a common interface to allow execution of functions by LLMs.
 
 ![Usage diagram of eidos](assets/eidos.png)
