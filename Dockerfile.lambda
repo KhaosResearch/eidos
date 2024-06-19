@@ -1,0 +1,22 @@
+FROM amazon/aws-lambda-python:3.10
+
+# When sending request from the UI it crashes as described in this issue, this is a patch for it
+# https://github.com/aws/aws-lambda-runtime-interface-emulator/issues/97#issuecomment-1707171018
+RUN curl -Lo /usr/local/bin/aws-lambda-rie https://github.com/aws/aws-lambda-runtime-interface-emulator/releases/download/v1.10/aws-lambda-rie \
+    && chmod +x /usr/local/bin/aws-lambda-rie
+
+
+COPY README.md /code/README.md
+COPY src /code/src
+COPY pyproject.toml /code/pyproject.toml
+COPY ./functions /functions
+
+ENV EIDOS_ENV production
+
+ENV EIDOS_FUNCTIONS_FOLDER=/functions
+
+RUN pip install --no-cache-dir "/code"
+
+EXPOSE 8080
+
+CMD [ "eidos.lambda.lambda_handler" ]

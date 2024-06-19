@@ -94,6 +94,7 @@ def execute(function_name: str, arguments: dict | None) -> dict[str, Any]:
     try:
         function_definition = json_load(file_path)
     except FileNotFoundError:
+        log.error("Error: function module not found.", function=function_name, file_path=file_path)
         raise FileNotFoundError("Error: function module not found.")
 
     # Validate input arguments against the function's schema.
