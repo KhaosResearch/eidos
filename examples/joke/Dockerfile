@@ -1,4 +1,4 @@
-FROM eidos:latest
+FROM ghcr.io/khaosresearch/eidos:latest
 
 WORKDIR /app
 
